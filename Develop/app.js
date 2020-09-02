@@ -13,41 +13,41 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-function promptUser(){
-    return inquirer.prompt([
-        {
-            type: "input",
-            name: "First Name",
-            Message: "Please enter your first name: "
-        },
-        {
-            type: "input",
-            name: "Email",
-            Message: "Please enter your Email: "
-        },
-        {
-            type: "input",
-            name: "ID",
-            Message: "Please enter your ID: "
-        }
+// function promptUser(){
+//     return inquirer.prompt([
+//         {
+//             type: "input",
+//             name: "First Name",
+//             Message: "Please enter your first name: "
+//         },
+//         {
+//             type: "input",
+//             name: "Email",
+//             Message: "Please enter your Email: "
+//         },
+//         {
+//             type: "input",
+//             name: "ID",
+//             Message: "Please enter your ID: "
+//         }
         
-    ]);
-};
+//     ]);
+// };
 
-async function init(){
-    try{
-        const answers = await promptUser();
-    }
-    catch(err){
-        console.log(err);
-    }
-}
+// async function init(){
+//     try{
+//         const answers = await promptUser();
+//     }
+//     catch(err){
+//         console.log(err);
+//     }
+// }
 
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
-render(answers);
+
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
@@ -64,5 +64,4 @@ render(answers);
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
-init();
-render();
+// init();
