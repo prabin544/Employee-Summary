@@ -1,16 +1,24 @@
-// // TODO: Write code to define and export the Manager class. HINT: This class should inherit from Employee.
-// const Employee = require("./Employee");
+// TODO: Write code to define and export the Manager class. HINT: This class should inherit from Employee.
+ const Employee = require("./Employee");
 
-// class Manager extends Employee{
-//     constructor(officeNumber, role){
-//         this.officeNumber = officeNumber;
+ class Manager extends Employee{
+     constructor(name, id, email, officeNumber, github){
+         super(name, id, email)
+         this.officeNumber = officeNumber;
+         this.officeNumber = github;
 //         this.role = role;
-//     }
+     }
     
-//     getRole(){
-//         console.log(`Employee Role: ${this.role}`)
-//     }
+     getofficeNumber(){
+         return this.officeNumber
+     }
+     getRole(){
+         return "Manager"
+     }
+     getGithub(){
+        return this.github;
+     }
 
-// }
+ }
 
-// module.exports = Manager;
+ module.exports = Manager;
