@@ -9,40 +9,106 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { getMaxListeners } = require("process");
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-// function promptUser(){
-//     return inquirer.prompt([
-//         {
-//             type: "input",
-//             name: "First Name",
-//             Message: "Please enter your first name: "
-//         },
-//         {
-//             type: "input",
-//             name: "Email",
-//             Message: "Please enter your Email: "
-//         },
-//         {
-//             type: "input",
-//             name: "ID",
-//             Message: "Please enter your ID: "
-//         }
-        
-//     ]);
-// };
+function promptUser(){
+    return inquirer.prompt([
+        {
+            type: "list",
+            choices: ["Manager", "Engineer", "Intern"],
+            name: "Please choose Member role you want to add ",
+        },
+        {
+            type: "input",
+            name: "name",
+            Message: "Please enter your first name: "
+        },
+        {
+            type: "input",
+            name: "email",
+            Message: "Please enter your Email: "
+        },
+        {
+            type: "input",
+            name: "id",
+            Message: "Please enter your ID: "
+        }        
+                
+    ]);
+};
+function promptManager(){
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "officeNumber",
+            Message: "Please enter your officeNumber: "
+        }
+    ]);
+};
 
-// async function init(){
-//     try{
-//         const answers = await promptUser();
-//     }
-//     catch(err){
-//         console.log(err);
-//     }
-// }
+function promptEngineer(){
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "github",
+            Message: "Please enter your github: "
+        }
+    ]);
+};
+function promptIntern(){
+    return inquirer.prompt([
+        {
+            type: "input",
+            name: "school",
+            Message: "Please enter your school: "
+        }
+    ]);
+};
+function promptAddMember(){
+    return inquirer.prompt([
+        {
+            type: "confirm",
+            name: "confirmed",
+            Message: "Do you want to add another team member? ",
+            default: false
+        }, function(reply){
+            if(reply.confirmed){
+                promptUser();
+            }
+        }
+    ]);
+};
 
+async function init(){
+    try{
+        const Employees = [];
+        const answers = await promptUser();
+        if (answers.role === "Manager"){
+            const managerAnswers = await promptManager();
+            const manager = new Manager(answers.name, answers.id, answers.email, managerAnswers.officeNumber)
+            promptAddMember();
+            Employees.push(manager);
+            const temphtml = render([manager]);
+            fs.writeFileSync(outputPath, temphtml);
+        }
+        if (answers.role === "Engineer"){
+            const engineerAnswers = await promptEngineer();
+            const engineer = new Engineer(answers.name, answers.id, answers.email, engineerAnswers.github)
+            Employees.push(engineer);
+            const temphtml = render([engineer]);
+            fs.writeFileSync(outputPath, temphtml);
+        }
+        console.log(Employees);
+
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+init();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
@@ -64,4 +130,4 @@ const render = require("./lib/htmlRenderer");
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
-// init();
+
