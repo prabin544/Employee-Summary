@@ -19,7 +19,7 @@ function promptUser(){
         {
             type: "list",
             choices: ["Manager", "Engineer", "Intern"],
-            name: "Please choose Member role you want to add ",
+            name: "role",
         },
         {
             type: "input",
@@ -35,7 +35,7 @@ function promptUser(){
             type: "input",
             name: "id",
             Message: "Please enter your ID: "
-        }        
+        }, 
                 
     ]);
 };
@@ -45,7 +45,8 @@ function promptManager(){
             type: "input",
             name: "officeNumber",
             Message: "Please enter your officeNumber: "
-        }
+        },
+          
     ]);
 };
 
@@ -55,7 +56,8 @@ function promptEngineer(){
             type: "input",
             name: "github",
             Message: "Please enter your github: "
-        }
+        },
+        
     ]);
 };
 function promptIntern(){
@@ -64,49 +66,64 @@ function promptIntern(){
             type: "input",
             name: "school",
             Message: "Please enter your school: "
-        }
+        },
+        
     ]);
 };
-function promptAddMember(){
+
+function addMember(){
     return inquirer.prompt([
         {
-            type: "confirm",
-            name: "confirmed",
-            Message: "Do you want to add another team member? ",
-            default: false
-        }, function(reply){
-            if(reply.confirmed){
-                promptUser();
-            }
+            type: 'confirm',
+            name: 'again',
+            message: 'Enter another member? ',
+            default: true
         }
-    ]);
+     ]);
 };
 
 async function init(){
     try{
         const Employees = [];
-        const answers = await promptUser();
-        if (answers.role === "Manager"){
-            const managerAnswers = await promptManager();
-            const manager = new Manager(answers.name, answers.id, answers.email, managerAnswers.officeNumber)
-            promptAddMember();
-            Employees.push(manager);
-            const temphtml = render([manager]);
-            fs.writeFileSync(outputPath, temphtml);
-        }
-        if (answers.role === "Engineer"){
-            const engineerAnswers = await promptEngineer();
-            const engineer = new Engineer(answers.name, answers.id, answers.email, engineerAnswers.github)
-            Employees.push(engineer);
-            const temphtml = render([engineer]);
-            fs.writeFileSync(outputPath, temphtml);
+        var answer = true;
+        while (answer){
+            Employees.push(await getEmployee());
+            const answeradd = await addMember();
+            answer = answeradd.again;
+            console.log(answer);
         }
         console.log(Employees);
-
+        const temphtml = render(Employees);
+        fs.writeFileSync(outputPath, temphtml);
     }
     catch(err){
         console.log(err);
     }
+    
+    
+}
+async function getEmployee () {
+    const answers = await promptUser();
+    if (answers.role === "Manager"){
+        const managerAnswers = await promptManager();
+        const manager = new Manager(answers.name, answers.id, answers.email, managerAnswers.officeNumber)
+        console.log(manager)
+        return manager;
+        
+    }
+    if (answers.role === "Engineer"){
+        const engineerAnswers = await promptEngineer();
+        const engineer = new Engineer(answers.name, answers.id, answers.email, engineerAnswers.github)
+        return engineer;
+        
+    }
+    if (answers.role === "Intern"){
+        const internAnswers = await promptIntern();
+        const intern = new Intern(answers.name, answers.id, answers.email, internAnswers.school)
+        return intern;
+       
+    }
+    
 }
 init();
 

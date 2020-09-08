@@ -1,0 +1,9 @@
+body{
+    background-color: cadetblue;
+}
+#title {
+    background-color: rgb(230, 92, 92);
+}
+.card-deck{
+    margin: auto;
+}
