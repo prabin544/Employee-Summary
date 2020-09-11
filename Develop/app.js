@@ -90,9 +90,9 @@ async function init(){
             Employees.push(await getEmployee());
             const answeradd = await addMember();
             answer = answeradd.again;
-            console.log(answer);
+            //console.log(answer);
         }
-        console.log(Employees);
+        //console.log(Employees);
         const temphtml = render(Employees);
         fs.writeFileSync(outputPath, temphtml);
     }
@@ -107,7 +107,7 @@ async function getEmployee () {
     if (answers.role === "Manager"){
         const managerAnswers = await promptManager();
         const manager = new Manager(answers.name, answers.id, answers.email, managerAnswers.officeNumber)
-        console.log(manager)
+        //console.log(manager)
         return manager;
         
     }
